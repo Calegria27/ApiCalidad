@@ -22,8 +22,22 @@ async def get_empresas(item:str):
     return empresasList
 
 @router.post('/user/empresas/obras')
-async def get_empresas(item:dict):
+async def get_obras(item:dict):
     stmt=("SELECT INDMaeUNegocioActivas.CtoCodigo,UPPER(INDMaeUNegocioActivas.CtoDescripcion) as Obras FROM INDMaeUNegocioActivas INNER JOIN INDUsuNegocio ON INDMaeUNegocioActivas.CtoCodigo = INDUsuNegocio.CtoCodigo AND INDMaeUNegocioActivas.CtoEmpresa = INDUsuNegocio.CtoEmpresa WHERE (INDUsuNegocio.Usu_Cuenta = '"+item["Usu_Cuenta"]+"') AND (INDUsuNegocio.CtoEmpresa = '"+item["CtoEmpresa"]+"')")
     obras=conn.execute(stmt)
     obrasList=obras.fetchall()
     return obrasList
+
+@router.post('/user/empresas/obras/sector')
+async def get_sectores(item:dict):
+    stmt=("SELECT DISTINCT Sector FROM INDTrUnidadFisica WHERE (CtoEmpresa = '"+item["CtoEmpresa"]+"') AND (CtoCodigo = '"+item["CtoCodigo"]+"') AND (Sector <> 0)")
+    sector=conn.execute(stmt)
+    sectorList=sector.fetchall()
+    return sectorList
+
+@router.post('/user/empresas/obras/ufisica')
+async def get_sectores(item:dict):
+    stmt=("SELECT unidadfisica  FROM INDTrUnidadFisica where CtoEmpresa='"+item["CtoEmpresa"]+"' and CtoCodigo='"+item["CtoCodigo"]+"' and sector='"+item["sector"]+"' and Sector<>0 ORDER BY unidadfisica ASC")
+    uFisica=conn.execute(stmt)
+    uFisicaList=uFisica.fetchall()
+    return uFisicaList
