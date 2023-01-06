@@ -35,9 +35,9 @@ async def get_sectores(item:dict):
     sectorList=sector.fetchall()
     return sectorList
 
-@router.post('/user/empresas/obras/ufisica')
-async def get_sectores(item:dict):
-    stmt=("SELECT unidadfisica  FROM INDTrUnidadFisica where CtoEmpresa='"+item["CtoEmpresa"]+"' and CtoCodigo='"+item["CtoCodigo"]+"' and sector='"+item["sector"]+"' and Sector<>0 ORDER BY unidadfisica ASC")
+@router.post('/user/empresas/obras/sector/ufisica')
+async def get_ufisica(item:dict):
+    stmt=("SELECT unidadfisica  FROM INDTrUnidadFisica where CtoEmpresa='"+item["CtoEmpresa"]+"' and CtoCodigo='"+item["CtoCodigo"]+"' and sector='"+item["Sector"]+"' and Sector<>0 ORDER BY unidadfisica ASC")
     uFisica=conn.execute(stmt)
     uFisicaList=uFisica.fetchall()
     return uFisicaList
