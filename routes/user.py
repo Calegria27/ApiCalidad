@@ -20,3 +20,10 @@ async def get_empresas(item:str):
     empresas=conn.execute(stmt)
     empresasList=empresas.fetchall()
     return empresasList
+
+@router.post('/user/empresas/obras')
+async def get_empresas(item:dict):
+    stmt=("SELECT INDMaeUNegocioActivas.CtoCodigo,UPPER(INDMaeUNegocioActivas.CtoDescripcion) as Obras FROM INDMaeUNegocioActivas INNER JOIN INDUsuNegocio ON INDMaeUNegocioActivas.CtoCodigo = INDUsuNegocio.CtoCodigo AND INDMaeUNegocioActivas.CtoEmpresa = INDUsuNegocio.CtoEmpresa WHERE (INDUsuNegocio.Usu_Cuenta = '"+item["Usu_Cuenta"]+"') AND (INDUsuNegocio.CtoEmpresa = '"+item["CtoEmpresa"]+"')")
+    obras=conn.execute(stmt)
+    obrasList=obras.fetchall()
+    return obrasList
