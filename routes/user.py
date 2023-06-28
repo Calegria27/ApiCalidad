@@ -51,14 +51,14 @@ async def get_modelo(item:dict):
 
 @router.post('/user/cartillacontrol')
 async def get_cartilla(item:dict):
-    stmt=("SELECT codigo_cartilla, UPPER(descripcion) AS Expr1 FROM indCCalidadCartilla WHERE (codigo_cartilla IN (SELECT DISTINCT codcartilla FROM indCcalidadVB WHERE (ctoempresa = '"+item["CtoEmpresa"]+"') AND (ctocodigo = '"+item["CtoCodigo"]+"') AND (sector = '"+item["Sector"]+"' ) AND (uf = '"+item["uFisica"]+"'))) ORDER BY codigo_cartilla")
+    stmt=("SELECT codigo_cartilla, UPPER(descripcion) AS Expr1 FROM indCCalidadCartilla WHERE (codigo_cartilla IN (SELECT DISTINCT codcartilla FROM indCcalidadVB WHERE (ctoempresa = '"+item["CtoEmpresa"]+"') AND (ctocodigo = '"+item["CtoCodigo"]+"') AND (sector = '"+str(item["Sector"])+"' ) AND (uf = '"+item["uFisica"]+"'))) ORDER BY codigo_cartilla")
     cartilla=conn.execute(stmt)
     cartillaList=cartilla.fetchall()
     return cartillaList
 
 @router.post('/user/cartllacontrol/tarifado')
 async def get_tarifado(item:dict):
-    stmt=("SELECT ISNULL(C.codtarifado, 0) AS codtarifado, ISNULL(UPPER(D.Descripcion), 0) AS TARIFADO FROM indCcalidadVB AS C INNER JOIN INDTrTarifadoDet AS D ON C.ctocodigo = D.CtoCodigo AND C.codtarifado = D.CodTarifadoDet AND C.ctoempresa = D.CtoEmpresa INNER JOIN indCCalidadCartillaActividad AS DD ON C.cartillaact = DD.codigo WHERE (C.ctocodigo = ISNULL('"+item["CtoCodigo"]+"', 0)) AND (C.sector = ISNULL('"+item["Sector"]+"', 0)) AND (C.uf = ISNULL('"+item["uFisica"]+"', 0)) AND (C.codcartilla = ISNULL('"+item["Cartilla"]+"', 0)) AND (C.ctoempresa = ISNULL('"+item["CtoEmpresa"]+"', 0)) GROUP BY C.codtarifado, D.Descripcion")
+    stmt=("SELECT ISNULL(C.codtarifado, 0) AS codtarifado, ISNULL(UPPER(D.Descripcion), 0) AS TARIFADO FROM indCcalidadVB AS C INNER JOIN INDTrTarifadoDet AS D ON C.ctocodigo = D.CtoCodigo AND C.codtarifado = D.CodTarifadoDet AND C.ctoempresa = D.CtoEmpresa INNER JOIN indCCalidadCartillaActividad AS DD ON C.cartillaact = DD.codigo WHERE (C.ctocodigo = ISNULL('"+str(item["CtoCodigo"])+"', 0)) AND (C.sector = ISNULL('"+str(item["Sector"])+"', 0)) AND (C.uf = ISNULL('"+str(item["uFisica"])+"', 0)) AND (C.codcartilla = ISNULL('"+str(item["Cartilla"])+"', 0)) AND (C.ctoempresa = ISNULL('"+item["CtoEmpresa"]+"', 0)) GROUP BY C.codtarifado, D.Descripcion")
     tarifado=conn.execute(stmt)
     tarifadoList=tarifado.fetchall()
     return tarifadoList
@@ -70,8 +70,10 @@ async def get_table(item:dict):
     informacionList=informacion.fetchall()
     return informacionList
 
-@router.post('/user/cartllacontrol/tarifado/list/insertid')
-async def insert_id(item:int):
-    stmt=("insert into ReceivedIdWeb (id) VALUES ("+str(item)+")")
+@router.post('/user/exec')
+async def insert_id(item:dict):
+    stmt=("INSERT INTO CargaCalidadWebExec (id, usuario, fecha, estado) VALUES ("+item["Id"]+",'"+item["User"]+"',getdate(),'"+item["Estado"]+"')")
     insertid=conn.execute(stmt)
-    return "id insertado"
+    return "SP Executed"
+
+ 
