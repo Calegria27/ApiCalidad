@@ -6,6 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 app=FastAPI()
 
 origins = [
+    "http://192.168.49.1",
+    "http://192.168.49.1:5174",
+    "http://192.168.49.1:5174/login",
+    "http://192.168.49.1:5174/home",
     "http://192.168.1.16",
     "http://192.168.1.16:5174",
     "http://192.168.1.16:5174/login",
