@@ -6,6 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 app=FastAPI()
 
 origins = [
+    "http://192.168.1.16",
+    "http://192.168.1.16:5174",
+    "http://192.168.1.16:5174/login",
+    "http://192.168.1.16:5174/home",
     "http://190.82.118.130",
     "http://190.82.118.130:5174",
     "http://190.82.118.130:5174/login",
@@ -29,4 +33,3 @@ app.add_middleware(
 
 
 app.include_router(router)
-
