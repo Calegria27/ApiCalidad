@@ -7,7 +7,7 @@ app=FastAPI()
 
 origins = [
     "http://190.82.118.130",
-    "http://190.82.118.130:5174/",
+    "http://190.82.118.130:5174",
     "http://190.82.118.130:5174/login",
     "http://190.82.118.130:5174/home",
     "http://sistratoscalidad.cindependencia.cl",
